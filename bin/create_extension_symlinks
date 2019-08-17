@@ -1,0 +1,87 @@
+#!/bin/bash
+
+echo "Setup extension: $1"
+
+[[ -z "$1" ]] && { echo "Error: extension variable is empty"; exit 1; }
+
+EXTENSION=$1
+echo "Extension name: ${EXTENSION}"
+REPO=`pwd`
+echo "Repo path: ${REPO}"
+EXTENSION_PATH="site/extension/$1/"
+echo "Extension folder: ${EXTENSION_PATH}"
+
+if [ ! -d "${EXTENSION_PATH}" ]; then
+  echo "Error: extension folder does not exist"
+  exit 1
+fi
+
+# setup app_modules
+SITE_APP_MODULE="${REPO}/site/app_modules/"
+
+#cd "${SITE_APP_MODULE}"
+#rm -fr ${EXTENSION}.js
+#ln -s "../../${EXTENSION_PATH}${EXTENSION}.js" ./
+
+BASEPATH=$REPO/site/extension/$EXTENSION/
+cd $BASEPATH
+for i in *.js; do
+  FILENAME="${i/.js/}"
+  echo "  ${FILENAME}"
+  cd "${SITE_APP_MODULE}"
+  rm -fr ${FILENAME}.js
+  ln -s "../../${EXTENSION_PATH}${FILENAME}.js" ./
+done
+echo "add in folder ${SITE_APP_MODULE}"
+
+# setup site/public
+
+SITE_PUBLIC="${REPO}/site/public/"
+cd "${SITE_PUBLIC}script/"
+rm -fr ${EXTENSION}
+ln -s "../../../${EXTENSION_PATH}public/script/${EXTENSION}" ./
+echo "add in folder ${SITE_PUBLIC}script/"
+
+cd "${SITE_PUBLIC}style/"
+rm -fr ${EXTENSION}
+ln -s "../../../${EXTENSION_PATH}public/style/${EXTENSION}" ./
+echo "add in folder ${SITE_PUBLIC}style/"
+
+cd "${SITE_PUBLIC}doc/"
+rm -fr ${EXTENSION}
+ln -s "../../../${EXTENSION_PATH}public/doc" ./${EXTENSION}
+echo "add in folder ${SITE_PUBLIC}doc/"
+
+# setup site/views
+
+SITE_VIEWS="${REPO}/site/views/"
+cd "${SITE_VIEWS}"
+rm -fr ${EXTENSION}
+ln -s "../../${EXTENSION_PATH}views/${EXTENSION}" ./
+echo "add in folder ${SITE_VIEWS}"
+
+# setup layout if exist
+cd "${REPO}"
+if [ -d "${EXTENSION_PATH}/layout" ]; then
+  echo "extension contains layout"
+  rm -fr site/views/layout
+  cd site/views/
+  ln -s "../extension/${EXTENSION}/layout" ./
+fi
+
+# setup test
+
+SITE_TEST="${REPO}/test/"
+cd "${SITE_TEST}"
+rm -fr ${EXTENSION}
+ln -s "../${EXTENSION_PATH}test" ./${EXTENSION}
+echo "add in folder ${SITE_TEST}"
+
+# list symbolic links created
+ls -l "${SITE_APP_MODULE}${EXTENSION}"*
+ls -l "${SITE_PUBLIC}script/${EXTENSION}"
+ls -l "${SITE_PUBLIC}style/${EXTENSION}"
+ls -l "${SITE_VIEWS}${EXTENSION}"
+ls -l "${SITE_TEST}${EXTENSION}"
+
+echo "Setup extension: complete."

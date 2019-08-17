@@ -1,0 +1,29 @@
+swagger: "2.0"
+
+info:
+  version: 1.0.0
+  title: web API
+  description: web API
+
+schemes:
+  - http
+host: leapbase.com
+basePath: /
+
+paths:
+  /:
+    post:
+      summary: web home page
+      description: web home page
+      produces:
+        - plain/text
+      parameters:
+        - in: query
+          name: input
+          description: text input
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: successful operation

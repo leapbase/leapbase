@@ -1,0 +1,45 @@
+{
+  "name": "leapbase",
+  "version": "1.0.0",
+  "description": "leapbase web development platform",
+  "license": "MIT",
+  "author": "leapon",
+  "main": "js/app.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/leapbase/leapbase.git"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.10.1",
+    "async": "~2.6.0",
+    "body-parser": "~1.18.2",
+    "bootstrap": "^4.3.1",
+    "compression": "^1.6.2",
+    "cookie-parser": "~1.4.1",
+    "debug": "^3.1.0",
+    "esm": "^3.2.25",
+    "express": "^4.16.0",
+    "express-http-to-https": "^1.1.4",
+    "express-session": "^1.12.1",
+    "imap": "^0.8.19",
+    "jquery": "^3.4.1",
+    "jsonwebtoken": "^8.1.0",
+    "mocha": "^6.1.4",
+    "moment": "^2.7.0",
+    "moment-timezone": "^0.5.9",
+    "mongodb": "^2.2.36",
+    "morgan": "^1.9.1",
+    "multer": "^1.2.0",
+    "nunjucks": "^3.0.1",
+    "nunjucks-date-filter": "^0.1.1",
+    "request": "^2.88.0",
+    "serve-favicon": "^2.3.0",
+    "style-loader": "^0.19.0",
+    "uuid": "^3.1.0"
+  },
+  "scripts": {
+    "test": "find -L ./test -name '*_test.js' | xargs mocha -R spec",
+    "start": "DEBUG=*,-express* node ./bin/www leapbase",
+    "pm2": "pm2 start bin/www --name leapbase"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "web",
+  "dependencies": {
+  },
+  "scripts": {
+    "test_web": "find -L ./test -name 'web_test.js' | xargs mocha -R spec"
+  }
+}

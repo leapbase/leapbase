@@ -61,7 +61,7 @@ typings/
 package-lock.json
 
 # ignore setting.js
-setting.js
+# setting.js
 
 # upload content
 site/public/upload/

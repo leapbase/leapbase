@@ -1,0 +1,55 @@
+{% extends '../layout/layout.html' %}
+
+{% set module = app.module[page.moduleName] %}
+{% set model = module.model %}
+
+{% block script %}
+  {{ super() }}
+  <script src="/script/common/object_create.js"></script>
+  <script>
+  var moduleName = '{{ page.moduleName }}';
+  </script>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-9 well">
+
+      <form name="create_{{ page.moduleName }}_form" class="form col-md-9"
+        enctype="multipart/form-data" method="post" id="object_create_form"
+        action="/admin/module/{{ page.moduleName }}/create" >
+
+        <h4 class="col-md-8">Create {{ page.moduleName|title }}</h4>
+        <br/>
+
+        <div class="col-md-8" style="padding:10px 0 10px 15px;">
+        {% for key, field in module.model %}
+            {% if field.subtype and field.subtype.type %}
+              {% set typeDetail = field.type + '/' + field.subtype.type %}
+            {% else %}
+              {% set typeDetail = field.type %}
+            {% endif %}
+            {% set showFieldInput = true %}
+            {% if field.config and field.config.auto %}
+              {% set showFieldInput = false %}
+            {% endif %}
+            {% if showFieldInput %}
+            <label>{{ key }} ( {{ typeDetail }} )</label>
+            <div>{{ page.docHtml[key]|safe }}</div>
+            <br/>
+            {% endif %}
+        {% endfor %}
+        </div>
+
+        <p class="col-md-12 submit">
+          <input type="submit" name="submit"
+            id="form_submit" class="btn btn-light" value="Save" tabindex="100" />
+          <input type="hidden" name="object_class" value="{{ page.moduleName }}" />
+        </p>
+      </form>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+#!/bin/bash
+
+echo "Init extension $1"
+
+[[ -z "$1" ]] && { echo "Error: extension variable is empty"; exit 1; }
+
+SED="sed"
+if [ "$(uname)" == "Darwin" ]; then
+    SED="gsed"
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+    SED="sed"
+fi
+
+EXTENSION=$1
+echo "New extension name: ${EXTENSION}"
+REPO=`pwd`
+echo "Repo path: ${REPO}"
+EXTENSION_PATH="site/extension/$1/"
+echo "Extension path: ${EXTENSION_PATH}"
+
+if [ -d "${EXTENSION_PATH}" ]; then
+  echo "Error: extension folder exits already"
+  exit 1
+fi
+
+cp -R site/extension/item ${EXTENSION_PATH}
+
+mv "${EXTENSION_PATH}item.js" "${EXTENSION_PATH}${EXTENSION}.js"
+mv "${EXTENSION_PATH}public/script/item" "${EXTENSION_PATH}public/script/${EXTENSION}"
+mv "${EXTENSION_PATH}public/style/item" "${EXTENSION_PATH}public/style/${EXTENSION}"
+mv "${EXTENSION_PATH}views/item" "${EXTENSION_PATH}views/${EXTENSION}"
+mv "${EXTENSION_PATH}test/item_test.js" "${EXTENSION_PATH}test/${EXTENSION}_test.js"
+
+eval "$SED -i -e s/item/${EXTENSION}/g ${EXTENSION_PATH}${EXTENSION}.js"
+eval "$SED -i -e s/item/${EXTENSION}/g ${EXTENSION_PATH}setting.json"
+eval "$SED -i -e s/item/${EXTENSION}/g ${EXTENSION_PATH}package.json"
+eval "$SED -i -e s/item/${EXTENSION}/g ${EXTENSION_PATH}README.md"
+eval "$SED -i -e s/item/${EXTENSION}/g ${EXTENSION_PATH}public/script/${EXTENSION}/index.js"
+eval "$SED -i -e s/item/${EXTENSION}/g ${EXTENSION_PATH}public/style/${EXTENSION}/index.css"
+eval "$SED -i -e s/item/${EXTENSION}/g ${EXTENSION_PATH}views/${EXTENSION}/index.html"
+eval "$SED -i -e s/item/${EXTENSION}/g ${EXTENSION_PATH}test/${EXTENSION}_test.js"
+
+# tree "${EXTENSION_PATH}"
+echo "Init extension: complete."

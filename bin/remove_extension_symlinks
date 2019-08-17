@@ -1,0 +1,26 @@
+#!/bin/bash
+
+EXTENSION=$1
+echo "Remove extension ${EXTENSION}"
+
+[[ -z "$1" ]] && { echo "Error: extension variable is empty"; exit 1; }
+
+echo "extension name: ${EXTENSION}"
+REPO=`pwd`
+echo "Repo path: ${REPO}"
+
+# remove symbolic links
+
+SITE_APP_MODULE="${REPO}/site/app_modules/"
+SITE_PUBLIC="${REPO}/site/public/"
+SITE_VIEWS="${REPO}/site/views/"
+SITE_TEST="${REPO}/test/"
+
+rm -fr "${SITE_APP_MODULE}${EXTENSION}.js"
+rm -fr "${SITE_PUBLIC}script/${EXTENSION}"
+rm -fr "${SITE_PUBLIC}style/${EXTENSION}"
+rm -fr "${SITE_PUBLIC}doc/${EXTENSION}"
+rm -fr "${SITE_VIEWS}${EXTENSION}"
+rm -fr "${SITE_TEST}${EXTENSION}"
+
+echo "Remove extension ${EXTENSION}: complete."

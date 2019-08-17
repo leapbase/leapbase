@@ -1,0 +1,177 @@
+{% extends '../layout/layout.html' %}
+
+{% set docs = page.docs %}
+{% set module = app.module[page.moduleName] %}
+{% set searchFields = page.searchFields %}
+{% set displayFields = page.displayFields %}
+{% set displayFieldCount = page.displayFieldCount %}
+{% set displayModuleIdLink = page.displayModuleIdLink %}
+{% set buttons = page.buttons %}
+
+{% block script %}
+{{ super() }}
+<script>
+var page = {{ page|dump(2)|safe }};
+</script>
+<script src="/script/common/object_list.js"></script>
+{% if module.scriptFiles and module.scriptFiles.list %}
+  {% for scriptFile in module.scriptFiles.list %}
+  <script src="/script/{{ scriptFile }}"></script>
+  {% endfor %}
+{% endif %}
+{% endblock %}
+
+{% block style %}
+{{ super() }}
+<style>
+.caption-text {
+  margin-bottom: 15px;
+}
+.pagination {
+  background-color: #f2f2f2;
+  margin-top: 5px;
+  padding: 5px;
+}
+.nav_top_buttons {
+  margin-bottom: 20px;
+}
+.btn-search {
+  margin-left: 8px;
+}
+.table-col-buttons  {
+  min-width: 80px;
+}
+.table-content {
+  margin-bottom: 0px;
+}
+</style>
+{% if module.styleFiles and module.styleFiles.list %}
+  {% for styleFile in module.styleFiles.list %}
+  <link rel="stylesheet" type="text/css" href="/style/{{ styleFile }}" />
+  {% endfor %}
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+
+  <!-- table caption -->
+  <div class="row">
+    <h3 class="col caption-text">
+      {{ page.moduleName|title }} List
+    </h3>
+  </div>
+
+  <!-- table header row -->
+  <div class="row nav_top_buttons">
+      <div class="col">
+        {% if page.hideSearchField == false %}
+        <form class="form-search form-inline" method="POST" action="/admin/module/{{ page.moduleName }}/list/search">
+          <input type="text" name="term" class="form-control search-query" value="{{ page.searchTerm }}">
+          <button type="submit" class="btn btn-light btn-search">Search</button>
+        </form>
+        {% endif %}
+      </div>
+      {% if page.hideAddButton %}
+      {% else %}
+      <div class="col">
+        <a class="btn btn-light float-right" href="/admin/module/{{ page.moduleName }}/create">
+          Add {{ page.moduleName|title }}
+        </a>
+      </div>
+      {% endif %}
+  </div>
+
+  <!-- table body row -->
+  <div class="row">
+    <div class="col">
+      <table class="table table-bordered table-content">
+      <caption></caption>
+      <thead>
+        <tr>
+          {% if displayFields %}
+            {% for field in displayFields%}
+              <td>{{ field|replace('_', ' ')|upper }}</td>
+            {% endfor %}
+          {% else %}
+            <td>ID</td>
+            {% for field in module.model %}
+              {% if loop.index <= displayFieldCount %}
+              <td>{{ loop.key|replace('_', ' ')|upper }}</td>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          {% if buttons %}
+            <td class="table-col-buttons"></td>
+          {% endif %}
+        </tr>
+      </thead>
+      <tbody>
+      {% for doc in docs %}
+        <tr
+          id="{{ page.moduleName }}_{{ doc._id }}"
+          data-id="{{ doc._id }}"
+          data-class="{{ doc._class }}"
+          data-parent-id="{{ doc.parent_id }}"
+          data-parent-class="{{ doc.parent_type }}" >
+          {% if displayFields %}
+            {% for fieldname in displayFields%}
+              {% set field = module.model[fieldname] %}
+              {% if loop.index == 1 and displayModuleIdLink %}
+                <td><a href="/admin/module/{{ doc._class }}/{{ doc._id }}/view">{{ doc[fieldname] }}</a></td>
+              {% else %}
+                <td>
+                {% if field.type == 'date' %}
+                  {{ doc[fieldname]|date('n/d/Y H:i') }}
+                {% else %}
+                  {{ doc[fieldname] }}
+                {% endif %}
+                </td>
+              {% endif %}
+            {% endfor %}
+          {% else %}
+            <td><a href="/module/{{ doc._class }}/{{ doc._id }}/view">{{ doc._id }}</a></td>
+            {% for field in module.model %}
+              {% if loop.index <= displayFieldCount %}
+              <td>{{ doc[loop.key] }}</td>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          {% if buttons %}
+            <td>
+              <div class="pull-right">
+              {% for button in buttons %}
+                <a
+                  href="{{ button.link }}?id={{ doc._id }}&class={{ doc._class }}"
+                  class="btn btn-xs btn-info {{ button.class }}">
+                  {{ button.content|safe }}
+                </a>
+              {% endfor %}
+              </div>
+            </td>
+          {% endif %}
+        </tr>
+      {% endfor %}
+      </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- navigation toolbar -->
+  <div class="row">
+    <div class="col">
+      <ul class="pagination">
+        <li id="btnFirst"><i class="glyphicon glyphicon-fast-backward" style="margin:0 5px 0 5px;"></i></li>
+        <li id="btnPrev"><i class="glyphicon glyphicon-step-backward" style="margin:0 5px 0 5px;"></i></li>
+        <li id="itemInfo" style="margin:0 10px 0 20px;text-align: center;"></li>
+        <li id="pageInfo" style="margin:0 20px 0 10px;text-align: center;"></li>
+        <li id="btnNext"><i class="glyphicon glyphicon-step-forward" style="margin:0 5px 0 5px;"></i></li>
+        <li id="btnLast"><i class="glyphicon glyphicon-fast-forward" style="margin:0 5px 0 5px;"></i></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
+

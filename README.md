@@ -1,9 +1,16 @@
-# leapbase
+# Introduction
 
-Web application platform
+Leapbase is a powerful and extensible web application platform.
 
+
+# Start web server
+
+```
+npm start
+```
 
 # Git Setup
+
 ```
 git config user.name $GITHUB_USER_NAME
 git config user.email $GITHUB_USER_EMAIL

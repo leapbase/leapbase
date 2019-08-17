@@ -1,0 +1,85 @@
+{% extends '../layout/layout.html' %}
+
+{% block script %}
+  {{ super() }}
+  {% set doc = page.docs[0] %}
+  <script src="/script/common/object_view.js"></script>
+  <script>
+  var doc = { id: '{{ doc._id }}' };
+  var moduleName = '{{ page.moduleName }}';
+  </script>
+{% endblock %}
+
+{% block style %}
+{{ super() }}
+<style>
+.object-view label {
+  padding-bottom: 5px;
+  border-bottom: solid 1px #f2f2f2;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+{% set doc = page.docs[0] %}
+{% set module = app.module[page.moduleName] %}
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-10 well">
+
+      <h3 style="margin-top:0px;">
+        <div class="float-right">
+          <a href="/admin/module/{{ page.moduleName }}/list" class="btn btn-sm btn-light">
+            Back to List
+          </a>
+          <a href="/admin/module/{{ page.moduleName }}/{{ doc._id }}/edit" class="btn btn-sm btn-light">
+            Edit
+          </a>
+        </div>
+        View {{ page.moduleName|title }}
+        <div class="text-muted" style="font-size:0.7em;padding-top:10px;">
+          id: {{ doc._id }}
+        </div>
+        <hr/>
+      </h3>
+
+      <div class="object-view">
+      {% for key, field in module.model %}
+        {% if field.subtype and field.subtype.type %}
+          {% set typeDetail = field.type + '/' + field.subtype.type %}
+        {% else %}
+          {% set typeDetail = field.type %}
+        {% endif %}
+        <label>{{ key }} ( {{ typeDetail }} )</label>
+        <div>{{ page.docHtml[key]|safe }}</div>
+        <br/>
+      {% endfor %}
+      </div>
+
+      <div style="margin-top:10px;">
+        {% if module.model.parent_type %}
+        <a id="{{ doc.parent_type }}-{{ doc.parent_id }}" 
+          class="btn btn-light btn-view-parent"
+          href="/admin/module/{{ doc.parent_type }}/{{ doc.parent_id }}/view" >
+          View parent {{ doc.parent_type }}
+        </a>
+        {% endif %}
+        {% for childModuleName in module.option.has_many %}
+        <a id="btnAdd{{ childModuleName }}" 
+          class="btn btn-light btn-add-child"
+          href="/admin/module/{{ childModuleName }}/create?parent_type={{doc._class}}&parent_id={{doc._id}}" >
+          Add child {{ childModuleName }}
+        </a>
+        <a id="btnView{{ childModuleName }}" 
+          class="btn btn-light btn-view-child"
+          href="/admin/module/{{ childModuleName }}/list?parent_type={{doc._class}}&parent_id={{doc._id}}" >
+          View child {{ childModuleName }} list
+        </a>
+        {% endfor %}
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

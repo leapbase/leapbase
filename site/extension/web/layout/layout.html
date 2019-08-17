@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <!-- <link rel="icon" href="favicon.ico"> -->
+  <title>{{ page.title }}</title>
+
+  {% block style %}
+  <link rel="stylesheet" href="/library/fontawesome/css/all.css">
+  <link rel="stylesheet" href="/library/bootstrap/css/bootstrap.css">
+  <link rel="stylesheet" href="/style/layout/layout.css">
+  {% endblock %}
+</head>
+
+<body>
+{% block header %}
+<div class="header-container">
+<nav class="navbar navbar-expand-md navbar-light bg-light fixed-top shadow-sm">
+  <a class="navbar-brand" href="/"><i class="fas fa-pen-alt"></i></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarsDefault">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item {% if page.page_name == 'index' %}active{% endif %}">
+        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item {% if page.page_name == 'about' %}active{% endif %}">
+        <a class="nav-link" href="/about">About</a>
+      </li>
+    </ul>
+    
+    <ul class="navbar-nav">
+      {% if page.show_user_dropdown %}
+      <li class="dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" data-toggle="dropdown">
+          {% if page.user %}
+          <i class="far fa-id-badge"></i>
+          {% else %}
+          <i class="far fa-id-badge"></i>
+          {% endif %}
+        </a>
+        <div class="dropdown-menu dropdown-menu-right">
+          {% if page.user %}
+          <a class="dropdown-item" href="/{{ page.user_module }}/profile">profile</a>
+          <a class="dropdown-item" href="/{{ page.user_module }}/logout">logout</a>
+          {% else %}
+          <a class="dropdown-item" href="/{{ page.user_module }}/login">login</a>
+          {% endif %}
+        </div>
+      </li>
+      {% endif %}
+    </ul>
+    
+  </div>
+</nav>
+</div>
+{% endblock %}
+
+<main role="main" class="body-container container-fluid">
+  {% set hideHeaderMessage = 'd-none' %}
+  {% if page.message %}
+  {% set hideHeaderMessage = '' %}
+  {% endif %}
+  <div class="alert alert-warning alert-dismissable app-header-message {{ hideHeaderMessage }}">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    {{ page.message.content }}
+  </div>
+  {% block content %}{% endblock %}
+</main>
+
+{% block footer %}
+<div class="footer-container container-fluid">
+  <hr/>
+  <div class="row">
+    <hr/>
+    <span class="text-muted col-md-12">Leapbase</span>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="/library/jquery/jquery.min.js"></script>
+<script src="/library/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/script/common/common.js"></script>
+{% if page.googleAnalytics.tracking_id %}
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?{{ page.googleAnalytics.tracking_id }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '{{ page.googleAnalytics.tracking_id }}');
+</script>
+{% endif %}
+{% endblock %}
+</body>
+</html>

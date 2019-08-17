@@ -1,0 +1,23 @@
+#!/usr/bin/env node
+var fs = require('fs');
+var https = require('https');
+var debug = require('debug')('www');
+
+require('../site/app')(function(app) {
+  
+  // http server
+  app.server.set('port', app.setting.http_port);
+  var webServer = app.server.listen(app.server.get('port'), function() {
+    debug('webserver listening on port ' + webServer.address().port);
+  });
+  // https server
+  if (app.setting.ssl && app.setting.ssl.enable) {
+    const options = {
+        cert: fs.readFileSync(app.setting.ssl.cert_file),
+        key: fs.readFileSync(app.setting.ssl.key_file)
+    };
+    var webSecureServer = https.createServer(options, app.server).listen(app.setting.https_port, function() {
+      debug('secure webserver listening on port ' + app.setting.https_port);
+    });
+  }
+});

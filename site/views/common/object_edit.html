@@ -1,0 +1,67 @@
+{% extends '../layout/layout.html' %}
+
+{% set doc = page.docs[0] %}
+{% set module = app.module[page.moduleName] %}
+{% set model = module.model %}
+
+{% block script %}
+  {{ super() }}
+  <script src="/script/common/object_edit.js"></script>
+  <script>
+  var doc = { id: '{{ doc._id }}' };
+  var moduleName = '{{ page.moduleName }}';
+  </script>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-9 well">
+
+      <h3 style="margin-top:0px;">
+        <div class="float-right">
+          <a href="/admin/module/{{ page.moduleName }}/list" class="btn btn-sm btn-light">
+            Back to List
+          </a>
+        </div>
+        Edit {{ page.moduleName|title }}
+        <div class="text-muted" style="font-size:0.7em;padding-top:10px;">
+          id: {{ doc._id }}
+        </div>
+        <hr/>
+      </h3>
+
+      <form name="update_{{ page.moduleName }}_form" class="form col-md-9"
+        enctype="multipart/form-data" method="post" id="update_{{ page.moduleName }}_form"
+        action="/admin/module/{{ page.moduleName }}/{{ doc._id }}/edit" >
+
+        <div>
+        {% for key, field in module.model %}
+            {% if field.subtype and field.subtype.type %}
+              {% set typeDetail = field.type + '/' + field.subtype.type %}
+            {% else %}
+              {% set typeDetail = field.type %}
+            {% endif %}
+            {% set showFieldInput = true %}
+            {% if field.config and field.config.auto %}
+              {% set showFieldInput = false %}
+            {% endif %}
+            {% if showFieldInput %}
+            <label>{{ key }} ( {{ typeDetail }} )</label>
+            <div>{{ page.docHtml[key]|safe }}</div>
+            <br/>
+            {% endif %}
+        {% endfor %}
+        </div>
+
+        <div>
+          <input type="submit" name="submit" id="submit" class="btn btn-light" value="Save" tabindex="100" />
+          <input type="hidden" name="object_class" value="{{ page.moduleName }}" />
+          <input type="hidden" name="object_id" value="{{ doc._id }}" />
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

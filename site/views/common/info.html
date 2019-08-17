@@ -1,0 +1,17 @@
+{% extends '../layout/layout.html' %}
+
+{% block content %}
+<div class="container-fluid" style="margin-top:10px;">
+
+  <div class="row">
+    <div class="col-md-6">
+      {% if page.info %}
+      <div class="alert alert-info" role="alert">
+        {{ page.info.message }}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+{% endblock %}
