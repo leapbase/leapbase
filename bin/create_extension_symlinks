@@ -66,7 +66,7 @@ if [ -d "${EXTENSION_PATH}/layout" ]; then
   echo "extension contains layout"
   rm -fr site/views/layout
   cd site/views/
-  ln -s "../extension/${EXTENSION}/layout" ./
+  ln -s "../extension/${EXTENSION}/layout/views" ./layout
 fi
 
 # setup test

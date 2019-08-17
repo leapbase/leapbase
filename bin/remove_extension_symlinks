@@ -8,6 +8,8 @@ echo "Remove extension ${EXTENSION}"
 echo "extension name: ${EXTENSION}"
 REPO=`pwd`
 echo "Repo path: ${REPO}"
+EXTENSION_PATH="site/extension/$1/"
+echo "Extension folder: ${EXTENSION_PATH}"
 
 # remove symbolic links
 
@@ -15,6 +17,13 @@ SITE_APP_MODULE="${REPO}/site/app_modules/"
 SITE_PUBLIC="${REPO}/site/public/"
 SITE_VIEWS="${REPO}/site/views/"
 SITE_TEST="${REPO}/test/"
+
+# setup layout if exist
+cd "${REPO}"
+if [ -d "${EXTENSION_PATH}/layout" ]; then
+  echo "remove extension layout symlinks"
+  rm -fr site/views/layout
+fi
 
 rm -fr "${SITE_APP_MODULE}${EXTENSION}.js"
 rm -fr "${SITE_PUBLIC}script/${EXTENSION}"
