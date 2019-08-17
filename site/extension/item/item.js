@@ -10,8 +10,8 @@ module.exports = function(app) {
   
   var block = tool.object(require('base')(app, module_name));
   block.role = 'user';
-  block.description ='example module',
-  block.tags = ['template'];
+  block.description ='item module',
+  block.tags = ['example'];
   block.depends = [];
   
   block.data = tool.object(require('basedata')(app, module_name));
@@ -66,15 +66,9 @@ module.exports = function(app) {
   };
 
   // page
-  block.page.index = function(req, res, record) {
-    var condition = { type:'example' };
-    app.db.find(module_name, condition, {}, function(error, docs, info) {
-      console.log('item find result:', error, docs, info);
-      var page = app.getPage(req, { title:'item' });
-      page.record = record;
-      page.examples = docs;
-      res.render('item/index', { page:page });
-    });
+  block.page.index = function(req, res) {
+    var page = app.getPage(req, { title:'item' });
+    res.render('item/index', { page:page });
   };
   
   block.page.convert = function(req, res) {
@@ -85,25 +79,9 @@ module.exports = function(app) {
     app.sendJsonData(req, res, data);
   };
   
-  block.page.viewByName = function(req, res) {
-    var parameter = tool.getReqParameter(req);
-    var condition = { name:parameter.name };
-    app.db.find(module_name, condition, {}, function(error, docs, info) {
-      console.log('item find by name result:', error, docs, info);
-      var record = docs && docs[0] || null;
-      if (record) {
-        block.page.index(req, res, record);
-      } else {
-        var result = 'record is not found'; 
-        app.renderInfoPage(null, [], { message:result }, req, res);
-      }
-    });
-  };
-  
   // page route
   app.server.get('/item', block.page.index);
   app.server.get('/item/convert', block.page.convert);
-  app.server.get('/item/:name', block.page.viewByName);
 
   return block;
 };
