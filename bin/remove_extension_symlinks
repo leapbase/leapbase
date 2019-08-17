@@ -23,6 +23,8 @@ cd "${REPO}"
 if [ -d "${EXTENSION_PATH}/layout" ]; then
   echo "remove extension layout symlinks"
   rm -fr site/views/layout
+  rm -fr site/public/script/layout
+  rm -fr site/public/style/layout
 fi
 
 rm -fr "${SITE_APP_MODULE}${EXTENSION}.js"

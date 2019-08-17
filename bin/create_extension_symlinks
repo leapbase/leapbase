@@ -18,12 +18,8 @@ fi
 
 # setup app_modules
 SITE_APP_MODULE="${REPO}/site/app_modules/"
-
-#cd "${SITE_APP_MODULE}"
-#rm -fr ${EXTENSION}.js
-#ln -s "../../${EXTENSION_PATH}${EXTENSION}.js" ./
-
 BASEPATH=$REPO/site/extension/$EXTENSION/
+
 cd $BASEPATH
 for i in *.js; do
   FILENAME="${i/.js/}"
@@ -64,9 +60,15 @@ echo "add in folder ${SITE_VIEWS}"
 cd "${REPO}"
 if [ -d "${EXTENSION_PATH}/layout" ]; then
   echo "extension contains layout"
-  rm -fr site/views/layout
-  cd site/views/
+  rm -fr "${REPO}/site/views/layout"
+  rm -fr "${REPO}/site/public/script/layout"
+  rm -fr "${REPO}/site/public/style/layout"
+  cd "${REPO}/site/views/"
   ln -s "../extension/${EXTENSION}/layout/views" ./layout
+  cd "${REPO}/site/public/script/"
+  ln -s "../../../site/extension/${EXTENSION}/layout/script" ./layout
+  cd "${REPO}/site/public/style/"
+  ln -s "../../../site/extension/${EXTENSION}/layout/style" ./layout
 fi
 
 # setup test
