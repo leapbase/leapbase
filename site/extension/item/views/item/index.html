@@ -1,0 +1,32 @@
+{% extends '../layout/layout.html' %}
+
+{% block script %}
+{{ super() }}
+<script>
+  var app = app || {};
+</script>
+<script src="/script/item/index.js"></script>
+{% endblock %}
+
+{% block style %}
+{{ super() }}
+<link rel="stylesheet" href="/style/item/index.css">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+
+  <div class="row">
+    <div class="col-md-9">
+      <h4 class="title-text text-muted">Item</h4>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-9">
+      Home
+    </div>
+  </div>
+
+</div>
+{% endblock %}
