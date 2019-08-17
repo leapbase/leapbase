@@ -9,6 +9,16 @@ Leapbase is a powerful and extensible web application platform.
 npm start
 ```
 
+
+# Change setting file
+
+```
+cd site
+rm setting.js
+ln -s setting/setting-local.js setting.js
+```
+
+
 # Git Setup
 
 ```
