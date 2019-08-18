@@ -38,10 +38,10 @@ module.exports = function(app) {
       app: app, req: req, page: page
     });
   };
-
+  
   // page route
   app.server.get('/', block.page.showIndexPage);
-  app.server.get('/:page_name', block.page.showPage);
+  app.server.get('/page/:page_name', block.page.showPage);
   
   return block;
 };
