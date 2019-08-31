@@ -1,1 +1,1 @@
-setting/setting-nodb.js
+setting/setting-local.js

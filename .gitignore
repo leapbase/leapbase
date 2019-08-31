@@ -73,3 +73,7 @@ site/public/media/
 # cache folder
 .cache
 
+# private settings
+site/setting-private
+
+

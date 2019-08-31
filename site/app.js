@@ -211,6 +211,9 @@ function setupServer(app, cbSetup) {
 module.exports = function(callback) {
   // setup is asynchrous (database connect), so callback is needed to wait setup to complete
   setup(function(app) {
+    // turn show_user_dropdown to true in setting if user module is loaded
+    const userModuleName = app.setting['user_module'];
+    app.setting.show_user_dropdown = !!app.module[userModuleName];
     callback && callback(app);
   });
 };
