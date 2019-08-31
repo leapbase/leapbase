@@ -131,7 +131,9 @@ function setup(cbSetup) {
     var Database = require(app.setting.database.type + '_db');
     app.db = new Database(app, function(error) {
       if (error) {
-        console.log(error.message);
+        // console.log(error.message);
+        console.log("Error in connecting to database");
+        console.log("Leapbase exits\n");
         process.exit();
       } else {
         setupModules(app, cbSetup);
