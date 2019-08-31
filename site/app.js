@@ -129,8 +129,13 @@ function setup(cbSetup) {
   // setup database connection
   if (app.setting.database && app.setting.database.type) {
     var Database = require(app.setting.database.type + '_db');
-    app.db = new Database(app, function() {
-      setupModules(app, cbSetup);
+    app.db = new Database(app, function(error) {
+      if (error) {
+        console.log(error.message);
+        process.exit();
+      } else {
+        setupModules(app, cbSetup);
+      }
     });
   } else {
     setupModules(app, cbSetup);
