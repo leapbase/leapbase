@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Init extension $1"
+echo "Init extension $1 from sample extension"
 
 [[ -z "$1" ]] && { echo "Error: extension variable is empty"; exit 1; }
 
@@ -15,9 +15,16 @@ EXTENSION=$1
 echo "New extension name: ${EXTENSION}"
 REPO=`pwd`
 echo "Repo path: ${REPO}"
-EXTENSION_PATH="site/extension/$1/"
-echo "Extension path: ${EXTENSION_PATH}"
 
+SAMPLE_EXTENSION_PATH="site/extension/example/"
+echo "Sample Extension path: ${SAMPLE_EXTENSION_PATH}"
+if [ ! -d "${SAMPLE_EXTENSION_PATH}" ]; then
+  echo "Error: sample extension folder does not exist"
+  exit 1
+fi
+
+EXTENSION_PATH="site/extension/$1/"
+echo "New Extension path: ${EXTENSION_PATH}"
 if [ -d "${EXTENSION_PATH}" ]; then
   echo "Error: extension folder exits already"
   exit 1
