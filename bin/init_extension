@@ -23,22 +23,22 @@ if [ -d "${EXTENSION_PATH}" ]; then
   exit 1
 fi
 
-cp -R site/extension/item ${EXTENSION_PATH}
+cp -R site/extension/example ${EXTENSION_PATH}
 
-mv "${EXTENSION_PATH}item.js" "${EXTENSION_PATH}${EXTENSION}.js"
-mv "${EXTENSION_PATH}public/script/item" "${EXTENSION_PATH}public/script/${EXTENSION}"
-mv "${EXTENSION_PATH}public/style/item" "${EXTENSION_PATH}public/style/${EXTENSION}"
-mv "${EXTENSION_PATH}views/item" "${EXTENSION_PATH}views/${EXTENSION}"
-mv "${EXTENSION_PATH}test/item_test.js" "${EXTENSION_PATH}test/${EXTENSION}_test.js"
+mv "${EXTENSION_PATH}example.js" "${EXTENSION_PATH}${EXTENSION}.js"
+mv "${EXTENSION_PATH}public/script/example" "${EXTENSION_PATH}public/script/${EXTENSION}"
+mv "${EXTENSION_PATH}public/style/example" "${EXTENSION_PATH}public/style/${EXTENSION}"
+mv "${EXTENSION_PATH}views/example" "${EXTENSION_PATH}views/${EXTENSION}"
+mv "${EXTENSION_PATH}test/example_test.js" "${EXTENSION_PATH}test/${EXTENSION}_test.js"
 
-eval "$SED -i -e s/item/${EXTENSION}/g ${EXTENSION_PATH}${EXTENSION}.js"
-eval "$SED -i -e s/item/${EXTENSION}/g ${EXTENSION_PATH}setting.json"
-eval "$SED -i -e s/item/${EXTENSION}/g ${EXTENSION_PATH}package.json"
-eval "$SED -i -e s/item/${EXTENSION}/g ${EXTENSION_PATH}README.md"
-eval "$SED -i -e s/item/${EXTENSION}/g ${EXTENSION_PATH}public/script/${EXTENSION}/index.js"
-eval "$SED -i -e s/item/${EXTENSION}/g ${EXTENSION_PATH}public/style/${EXTENSION}/index.css"
-eval "$SED -i -e s/item/${EXTENSION}/g ${EXTENSION_PATH}views/${EXTENSION}/index.html"
-eval "$SED -i -e s/item/${EXTENSION}/g ${EXTENSION_PATH}test/${EXTENSION}_test.js"
+eval "$SED -i -e s/example/${EXTENSION}/g ${EXTENSION_PATH}${EXTENSION}.js"
+eval "$SED -i -e s/example/${EXTENSION}/g ${EXTENSION_PATH}setting.json"
+eval "$SED -i -e s/example/${EXTENSION}/g ${EXTENSION_PATH}package.json"
+eval "$SED -i -e s/example/${EXTENSION}/g ${EXTENSION_PATH}README.md"
+eval "$SED -i -e s/example/${EXTENSION}/g ${EXTENSION_PATH}public/script/${EXTENSION}/index.js"
+eval "$SED -i -e s/example/${EXTENSION}/g ${EXTENSION_PATH}public/style/${EXTENSION}/index.css"
+eval "$SED -i -e s/example/${EXTENSION}/g ${EXTENSION_PATH}views/${EXTENSION}/index.html"
+eval "$SED -i -e s/example/${EXTENSION}/g ${EXTENSION_PATH}test/${EXTENSION}_test.js"
 
 # tree "${EXTENSION_PATH}"
 echo "Init extension: complete."
