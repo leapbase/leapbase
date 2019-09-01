@@ -1,8 +1,0 @@
-{
-  "name": "item",
-  "dependencies": {
-  },
-  "scripts": {
-    "test_item": "find -L ./test -name 'item_test.js' | xargs mocha -R spec"
-  }
-}
