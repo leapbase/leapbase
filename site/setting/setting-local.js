@@ -2,6 +2,7 @@ exports.setting = {
   // web
   name: 'Leapbase',
   http_port: 8060,
+  https_port: 0, // 8443,
   webserver_baseurl: 'http://localhost:8060',
   // invite code
   invite_code_user: 'hello101test',
